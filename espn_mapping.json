@@ -1,0 +1,266 @@
+{
+  "Duke": {
+    "id": "150",
+    "espn_name": "Duke Blue Devils"
+  },
+  "Siena": {
+    "id": "2561",
+    "espn_name": "Siena Saints"
+  },
+  "Ohio St.": {
+    "id": "194",
+    "espn_name": "Ohio State Buckeyes"
+  },
+  "TCU": {
+    "id": "2628",
+    "espn_name": "TCU Horned Frogs"
+  },
+  "St. John's": {
+    "id": "2599",
+    "espn_name": "St. John's Red Storm"
+  },
+  "Northern Iowa": {
+    "id": "2460",
+    "espn_name": "Northern Iowa Panthers"
+  },
+  "Kansas": {
+    "id": "2305",
+    "espn_name": "Kansas Jayhawks"
+  },
+  "Cal Baptist": {
+    "id": "2856",
+    "espn_name": "California Baptist Lancers"
+  },
+  "Louisville": {
+    "id": "97",
+    "espn_name": "Louisville Cardinals"
+  },
+  "South Florida": {
+    "id": "58",
+    "espn_name": "South Florida Bulls"
+  },
+  "Michigan St.": {
+    "id": "127",
+    "espn_name": "Michigan State Spartans"
+  },
+  "North Dakota St.": {
+    "id": "2449",
+    "espn_name": "North Dakota State Bison"
+  },
+  "UCLA": {
+    "id": "26",
+    "espn_name": "UCLA Bruins"
+  },
+  "UCF": {
+    "id": "2116",
+    "espn_name": "UCF Knights"
+  },
+  "Connecticut": {
+    "id": "41",
+    "espn_name": "UConn Huskies"
+  },
+  "Furman": {
+    "id": "231",
+    "espn_name": "Furman Paladins"
+  },
+  "Arizona": {
+    "id": "12",
+    "espn_name": "Arizona Wildcats"
+  },
+  "Villanova": {
+    "id": "222",
+    "espn_name": "Villanova Wildcats"
+  },
+  "Utah St.": {
+    "id": "328",
+    "espn_name": "Utah State Aggies"
+  },
+  "Wisconsin": {
+    "id": "275",
+    "espn_name": "Wisconsin Badgers"
+  },
+  "High Point": {
+    "id": "2272",
+    "espn_name": "High Point Panthers"
+  },
+  "Arkansas": {
+    "id": "8",
+    "espn_name": "Arkansas Razorbacks"
+  },
+  "Hawaii": {
+    "id": "62",
+    "espn_name": "Hawai'i Rainbow Warriors"
+  },
+  "BYU": {
+    "id": "252",
+    "espn_name": "BYU Cougars"
+  },
+  "Texas": {
+    "id": "251",
+    "espn_name": "Texas Longhorns"
+  },
+  "N.C. State": {
+    "id": "152",
+    "espn_name": "NC State Wolfpack"
+  },
+  "Gonzaga": {
+    "id": "2250",
+    "espn_name": "Gonzaga Bulldogs"
+  },
+  "Kennesaw St.": {
+    "id": "338",
+    "espn_name": "Kennesaw State Owls"
+  },
+  "Miami FL": {
+    "id": "2390",
+    "espn_name": "Miami Hurricanes"
+  },
+  "Missouri": {
+    "id": "142",
+    "espn_name": "Missouri Tigers"
+  },
+  "Purdue": {
+    "id": "2509",
+    "espn_name": "Purdue Boilermakers"
+  },
+  "Michigan": {
+    "id": "130",
+    "espn_name": "Michigan Wolverines"
+  },
+  "UMBC": {
+    "id": "2378",
+    "espn_name": "UMBC Retrievers"
+  },
+  "Howard": {
+    "id": "47",
+    "espn_name": "Howard Bison"
+  },
+  "Georgia": {
+    "id": "61",
+    "espn_name": "Georgia Bulldogs"
+  },
+  "Saint Louis": {
+    "id": "139",
+    "espn_name": "Saint Louis Billikens"
+  },
+  "Texas Tech": {
+    "id": "2641",
+    "espn_name": "Texas Tech Red Raiders"
+  },
+  "Akron": {
+    "id": "2006",
+    "espn_name": "Akron Zips"
+  },
+  "Alabama": {
+    "id": "333",
+    "espn_name": "Alabama Crimson Tide"
+  },
+  "Hofstra": {
+    "id": "2275",
+    "espn_name": "Hofstra Pride"
+  },
+  "Tennessee": {
+    "id": "2633",
+    "espn_name": "Tennessee Volunteers"
+  },
+  "Miami OH": {
+    "id": "193",
+    "espn_name": "Miami (OH) RedHawks"
+  },
+  "SMU": {
+    "id": "2567",
+    "espn_name": "SMU Mustangs"
+  },
+  "Virginia": {
+    "id": "258",
+    "espn_name": "Virginia Cavaliers"
+  },
+  "Wright St.": {
+    "id": "2750",
+    "espn_name": "Wright State Raiders"
+  },
+  "Kentucky": {
+    "id": "96",
+    "espn_name": "Kentucky Wildcats"
+  },
+  "Santa Clara": {
+    "id": "2541",
+    "espn_name": "Santa Clara Broncos"
+  },
+  "Iowa St.": {
+    "id": "66",
+    "espn_name": "Iowa State Cyclones"
+  },
+  "Tennessee St.": {
+    "id": "2634",
+    "espn_name": "Tennessee State Tigers"
+  },
+  "Florida": {
+    "id": "57",
+    "espn_name": "Florida Gators"
+  },
+  "Prairie View A&M": {
+    "id": "2504",
+    "espn_name": "Prairie View A&M Panthers"
+  },
+  "Lehigh": {
+    "id": "2329",
+    "espn_name": "Lehigh Mountain Hawks"
+  },
+  "Clemson": {
+    "id": "228",
+    "espn_name": "Clemson Tigers"
+  },
+  "Iowa": {
+    "id": "2294",
+    "espn_name": "Iowa Hawkeyes"
+  },
+  "Vanderbilt": {
+    "id": "238",
+    "espn_name": "Vanderbilt Commodores"
+  },
+  "McNeese St.": {
+    "id": "2377",
+    "espn_name": "McNeese Cowboys"
+  },
+  "Nebraska": {
+    "id": "158",
+    "espn_name": "Nebraska Cornhuskers"
+  },
+  "Troy": {
+    "id": "2653",
+    "espn_name": "Troy Trojans"
+  },
+  "North Carolina": {
+    "id": "153",
+    "espn_name": "North Carolina Tar Heels"
+  },
+  "VCU": {
+    "id": "2670",
+    "espn_name": "VCU Rams"
+  },
+  "Illinois": {
+    "id": "356",
+    "espn_name": "Illinois Fighting Illini"
+  },
+  "Penn": {
+    "id": "219",
+    "espn_name": "Penn Quakers"
+  },
+  "Saint Mary's": {
+    "id": "2608",
+    "espn_name": "Saint Mary's Gaels"
+  },
+  "Texas A&M": {
+    "id": "245",
+    "espn_name": "Texas A&M Aggies"
+  },
+  "Houston": {
+    "id": "248",
+    "espn_name": "Houston Cougars"
+  },
+  "Idaho": {
+    "id": "70",
+    "espn_name": "Idaho Vandals"
+  }
+}
