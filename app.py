@@ -103,6 +103,10 @@ METRIC_PILLAR = {
 def fetch_team_news(api_key, team_name):
     """Use Claude with web search to find recent injuries/news for a team."""
     import requests as req
+    from datetime import date, timedelta
+    today = date.today()
+    week_ago = today - timedelta(days=10)
+    date_range = f"{week_ago.strftime('%B %d')} to {today.strftime('%B %d, %Y')}"
     try:
         resp = req.post("https://api.anthropic.com/v1/messages",
             headers={"Content-Type": "application/json", "x-api-key": api_key,
@@ -111,8 +115,12 @@ def fetch_team_news(api_key, team_name):
                 "model": "claude-sonnet-4-20250514", "max_tokens": 800,
                 "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
                 "messages": [{"role": "user", "content":
-                    f"Search the web for: \"{team_name} basketball injury update March 2026\"\n"
-                    f"Also search for: \"{team_name} NCAA tournament 2026 news\"\n\n"
+                    f"Find the latest injury news and roster updates for {team_name} college basketball.\n"
+                    f"Today is {today.strftime('%B %d, %Y')}. Focus ONLY on news from {date_range}.\n\n"
+                    f"Use web search with queries like:\n"
+                    f"- {team_name} basketball injury report {today.strftime('%Y')}\n"
+                    f"- {team_name} NCAA tournament injuries\n"
+                    f"- {team_name} basketball news this week\n\n"
                     f"From those results, give me ONLY bullet points:\n"
                     f"- PlayerName — status (injury detail)\n"
                     f"- Key news headline\n\n"
