@@ -271,11 +271,21 @@ Win margin + scoring stability across tiers
 3PT% variance + volume per game
 """)
     st.markdown("---")
-    st.markdown("**Grading:** A (elite) → F (fail)")
+    st.markdown("**Grade Colors**")
+    st.markdown("""
+<div style="font-family:'Source Sans 3',sans-serif; font-size:0.9rem; line-height:2;">
+<span style="background:#27ae60;color:#fff;padding:2px 10px;border-radius:4px;font-weight:700;">A</span> &nbsp;Elite &nbsp;&nbsp;
+<span style="background:#2980b9;color:#fff;padding:2px 10px;border-radius:4px;font-weight:700;">B</span> &nbsp;Good<br>
+<span style="background:#f39c12;color:#fff;padding:2px 10px;border-radius:4px;font-weight:700;">C</span> &nbsp;Average &nbsp;&nbsp;
+<span style="background:#e74c3c;color:#fff;padding:2px 10px;border-radius:4px;font-weight:700;">D</span> &nbsp;Weak<br>
+<span style="background:#95a5a6;color:#fff;padding:2px 10px;border-radius:4px;font-weight:700;">F</span> &nbsp;Fail
+</div>
+""", unsafe_allow_html=True)
+    st.markdown("---")
     st.markdown("**GPA:** 4.0 scale across all 6")
     st.markdown("**Champ Criteria:** Top-21 off AND top-37 def")
     st.markdown("---")
-    st.caption("Data: Barttorvik API · KenPom via BetMGM · ESPN Schedule API · CBS Sports · March 17 2026")
+    st.caption("Data: Barttorvik API · KenPom via BetMGM · ESPN Schedule API · CBS Sports · March 18 2026")
 
 tab1, tab2 = st.tabs(["⚔️  HEAD-TO-HEAD", "📊  FULL RANKINGS"])
 
