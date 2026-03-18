@@ -106,21 +106,22 @@ def fetch_team_news(api_key, team_name):
     try:
         resp = req.post("https://api.anthropic.com/v1/messages",
             headers={"Content-Type": "application/json", "x-api-key": api_key,
-                     "anthropic-version": "2023-06-01"},
+                     "anthropic-version": "2025-03-05"},
             json={
-                "model": "claude-sonnet-4-20250514", "max_tokens": 500,
-                "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
+                "model": "claude-sonnet-4-20250514", "max_tokens": 800,
+                "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
                 "messages": [{"role": "user", "content":
-                    f"Search for the latest injury updates and important news for {team_name} "
-                    f"men's basketball in the last 7 days (March 2026 NCAA tournament). "
-                    f"Return ONLY a bullet list of injuries/key news. Each bullet: "
-                    f"'Player — status (detail)'. If no injuries or news found, return 'No recent injury updates.'"}]
-            }, timeout=30)
+                    f"Search the web for: \"{team_name} basketball injury update March 2026\"\n"
+                    f"Also search for: \"{team_name} NCAA tournament 2026 news\"\n\n"
+                    f"From those results, give me ONLY bullet points:\n"
+                    f"- PlayerName — status (injury detail)\n"
+                    f"- Key news headline\n\n"
+                    f"No intro text. Just bullets. If nothing relevant found, say: No recent updates."}]
+            }, timeout=90)
         if resp.status_code == 200:
             data = resp.json()
-            for block in data.get("content", []):
-                if block.get("type") == "text":
-                    return block["text"]
+            texts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
+            return "\n".join(texts) if texts else None
         return None
     except Exception:
         return None
@@ -128,7 +129,7 @@ def fetch_team_news(api_key, team_name):
 def get_metrics(d):
     return d.get("five_metrics", {})
 
-def render_report_card(team_name, d, news=None):
+def render_report_card(team_name, d):
     fm = get_metrics(d)
     if not fm:
         st.warning(f"No metrics for {team_name}")
@@ -174,10 +175,6 @@ def render_report_card(team_name, d, news=None):
             </div>
             """, unsafe_allow_html=True)
 
-        # Live injury/news from web search
-        if news and "no recent" not in news.lower():
-            st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>Latest News</strong><br>{news}</div>', unsafe_allow_html=True)
-
     # Roster expander
     with st.expander(f"Full Roster — Top 8 by Minutes"):
         roster_df = pd.DataFrame([{
@@ -190,56 +187,6 @@ def render_report_card(team_name, d, news=None):
             st.dataframe(roster_df, use_container_width=True, hide_index=True)
 
 
-def call_anthropic_api(api_key, t1_name, t1, t2_name, t2, news1=None, news2=None):
-    import requests as req
-    def build(name, d, news=None):
-        fm = get_metrics(d)
-        ratio = d.get("pg_ast_pct",0) / max(d.get("pg_to_pct",1),0.1)
-        strs = "\n".join(f"  - {s['name']} ({s['class']}, {s['height']}, {s['position']}) PPG:{s['ppg']}, ORtg:{s['ortg']}" for s in d.get("starters", [])[:7])
-        ts = d.get("tier_splits") or {}
-        t1d = ts.get("Tier1", {})
-        base = f"""{name} ({d['seed']}-seed, {d['region']}, {d['record']})
-Report Card: M1={fm.get('m1_grade','?')} M2={fm.get('m2_grade','?')} M3={fm.get('m3_grade','?')} M4={fm.get('m4_grade','?')} M5={fm.get('m5_grade','?')} M6={fm.get('m6_grade','?')} GPA={fm.get('gpa','?')}
-Meets Championship Criteria: {fm.get('meets_champ_criteria', False)}
-KenPom: #{d.get('kenpom_rank','?')} (Off #{d.get('kenpom_off_rank','?')}, Def #{d.get('kenpom_def_rank','?')})
-Starter avg ht: {ht_display(d.get('avg_starter_height_in',0))} | Exp: {d.get('avg_starter_exp_yrs',0):.1f}yr
-T1 record: {t1d.get('wins',0)}-{t1d.get('losses',0)}, {t1d.get('avg_margin',0):+.1f} margin, {ts.get('consistency_pct',0):.0f}% retention
-PG: {d.get('pg_name','?')} (AST%: {d.get('pg_ast_pct','?')}, TO%: {d.get('pg_to_pct','?')}, Ratio: {ratio:.2f})
-Rotation:\n{strs}"""
-        if news and "no recent" not in news.lower():
-            base += f"\nLATEST NEWS/INJURIES:\n{news}"
-        return base
-
-    prompt = f"""You are an elite college basketball analyst helping someone win their bracket pool. 
-
-Grade each team on these 6 metrics (A/B/C/D/F):
-1. ROSTER MATURITY: height + experience. Senior-heavy 6'3"+ starters win in March.
-2. TWO-WAY BALANCE: KenPom off+def. 23 of 24 champs were top-21 off AND top-37 def.
-3. OFFENSIVE CONSISTENCY: Does scoring hold up across T1/T2/T3 tiers? Teams that only score vs cupcakes get exposed.
-4. PG BALL SECURITY: AST%/TO% ratio. Tournament pressure amplifies turnovers.
-5. TEMPO CONTROL: How stable is win margin (60%) and scoring (40%) across tiers? Teams that control pace win in March.
-6. 3PT RELIABILITY: Low game-to-game 3PT% variance + high volume = reliable shooting. Live by the 3, die by the 3.
-
-Here are two teams with REAL Barttorvik + KenPom data:
-
-{build(t1_name, t1, news1)}
-
-VS
-
-{build(t2_name, t2, news2)}
-
-For each metric, state which team wins that metric and why (cite specific data).
-Then give your PICK, confidence (1-10), and a one-sentence "why they win" and "why they lose" for each team.
-Keep it tight and data-driven."""
-
-    try:
-        resp = req.post("https://api.anthropic.com/v1/messages",
-            headers={"Content-Type": "application/json", "x-api-key": api_key, "anthropic-version": "2023-06-01"},
-            json={"model": "claude-sonnet-4-20250514", "max_tokens": 2000,
-                  "messages": [{"role": "user", "content": prompt}]}, timeout=60)
-        return resp.json()["content"][0]["text"] if resp.status_code == 200 else f"Error {resp.status_code}: {resp.text}"
-    except Exception as e:
-        return f"Error: {e}"
 
 
 # ── Layout ──
@@ -304,23 +251,11 @@ with tab1:
         d1, d2 = TEAMS[team1], TEAMS[team2]
         fm1, fm2 = get_metrics(d1), get_metrics(d2)
 
-        # Fetch live news/injuries for both teams
-        news1, news2 = None, None
-        if api_key:
-            cache_key = f"news_{team1}_{team2}"
-            if cache_key not in st.session_state:
-                with st.spinner("Searching latest news & injuries..."):
-                    st.session_state[cache_key] = (
-                        fetch_team_news(api_key, team1),
-                        fetch_team_news(api_key, team2),
-                    )
-            news1, news2 = st.session_state[cache_key]
-
         col1, col2 = st.columns(2)
         with col1:
-            render_report_card(team1, d1, news=news1)
+            render_report_card(team1, d1)
         with col2:
-            render_report_card(team2, d2, news=news2)
+            render_report_card(team2, d2)
 
         # Edge banner
         gpa1, gpa2 = fm1.get("gpa", 0), fm2.get("gpa", 0)
@@ -369,15 +304,26 @@ with tab1:
                 st.markdown("---")
                 st.caption("No common opponents this season.")
 
-        # AI Analysis
+        # Injury / News Search
         st.markdown("---")
         if api_key:
-            if st.button("Run AI Matchup Analysis", use_container_width=True, type="primary"):
-                with st.spinner("Claude is analyzing this matchup..."):
-                    result = call_anthropic_api(api_key, team1, d1, team2, d2, news1, news2)
-                    st.markdown(result)
+            if st.button("Search Latest Injuries & News", use_container_width=True, type="primary"):
+                with st.spinner("Searching latest injuries & news..."):
+                    news1 = fetch_team_news(api_key, team1)
+                    news2 = fetch_team_news(api_key, team2)
+                nc1, nc2 = st.columns(2)
+                with nc1:
+                    if news1 and "no recent" not in news1.lower() and "error" not in str(news1).lower():
+                        st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>{team1}</strong><br>{news1}</div>', unsafe_allow_html=True)
+                    else:
+                        st.caption(f"No recent injury news for {team1}.")
+                with nc2:
+                    if news2 and "no recent" not in news2.lower() and "error" not in str(news2).lower():
+                        st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>{team2}</strong><br>{news2}</div>', unsafe_allow_html=True)
+                    else:
+                        st.caption(f"No recent injury news for {team2}.")
         else:
-            st.info("Add your Anthropic API key in the sidebar to unlock AI matchup analysis.")
+            st.info("Add your Anthropic API key in the sidebar to search for latest injuries & news.")
 
     elif team1 == team2:
         st.warning("Pick two different teams.")
