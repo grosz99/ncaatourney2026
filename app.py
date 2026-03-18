@@ -121,10 +121,10 @@ def fetch_team_news(api_key, team_name):
         if resp.status_code == 200:
             data = resp.json()
             texts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-            return "\n".join(texts) if texts else None
-        return None
-    except Exception:
-        return None
+            return "\n".join(texts) if texts else "No recent updates."
+        return f"API error {resp.status_code}: {resp.text[:200]}"
+    except Exception as e:
+        return f"Error: {e}"
 
 def get_metrics(d):
     return d.get("five_metrics", {})
@@ -313,15 +313,19 @@ with tab1:
                     news2 = fetch_team_news(api_key, team2)
                 nc1, nc2 = st.columns(2)
                 with nc1:
-                    if news1 and "no recent" not in news1.lower() and "error" not in str(news1).lower():
+                    if news1 and "no recent" not in news1.lower():
                         st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>{team1}</strong><br>{news1}</div>', unsafe_allow_html=True)
-                    else:
+                    elif news1:
                         st.caption(f"No recent injury news for {team1}.")
-                with nc2:
-                    if news2 and "no recent" not in news2.lower() and "error" not in str(news2).lower():
-                        st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>{team2}</strong><br>{news2}</div>', unsafe_allow_html=True)
                     else:
+                        st.error(f"Failed to search news for {team1}. Check API key.")
+                with nc2:
+                    if news2 and "no recent" not in news2.lower():
+                        st.markdown(f'<div class="injury-row">&#9888;&#65039; <strong>{team2}</strong><br>{news2}</div>', unsafe_allow_html=True)
+                    elif news2:
                         st.caption(f"No recent injury news for {team2}.")
+                    else:
+                        st.error(f"Failed to search news for {team2}. Check API key.")
         else:
             st.info("Add your Anthropic API key in the sidebar to search for latest injuries & news.")
 
