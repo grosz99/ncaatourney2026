@@ -110,7 +110,7 @@ def fetch_team_news(api_key, team_name):
     try:
         resp = req.post("https://api.anthropic.com/v1/messages",
             headers={"Content-Type": "application/json", "x-api-key": api_key,
-                     "anthropic-version": "2025-03-05"},
+                     "anthropic-version": "2023-06-01"},
             json={
                 "model": "claude-sonnet-4-20250514", "max_tokens": 800,
                 "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
